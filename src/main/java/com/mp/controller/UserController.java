@@ -1,6 +1,7 @@
 package com.mp.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.mp.dto.PageDTO;
 import com.mp.dto.UserFormDTO;
 import com.mp.po.User;
 import com.mp.query.UserQuery;
@@ -49,5 +50,10 @@ public class UserController {
     public List<UserVO> queryUsers(UserQuery query) {
         List<User> users = userService.queryUsers(query.getName(), query.getStatus(), query.getMinBalance(), query.getMaxBalance());
         return BeanUtil.copyToList(users, UserVO.class);
+    }
+
+    @GetMapping("/page")
+    public PageDTO<UserVO> queryUsersPage(UserQuery query) {
+        return userService.queryUsersPage(query);
     }
 }

@@ -1,9 +1,11 @@
 package com.mp.query;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class UserQuery {
+@EqualsAndHashCode(callSuper = true)
+public class UserQuery extends PageQuery {
 
     private String name;
 

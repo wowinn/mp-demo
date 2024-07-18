@@ -2,12 +2,17 @@ package com.mp.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.Db;
+import com.mp.dto.PageDTO;
 import com.mp.enums.UserStatus;
 import com.mp.po.Address;
 import com.mp.po.User;
 import com.mp.mapper.UserMapper;
+import com.mp.query.UserQuery;
 import com.mp.service.UserService;
 import com.mp.vo.AddressVO;
 import com.mp.vo.UserVO;
@@ -93,5 +98,37 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             userVOList.add(vo);
         }
         return userVOList;
+    }
+
+    @Override
+    public PageDTO<UserVO> queryUsersPage(UserQuery query) {
+        //构造条件
+        String name = query.getName();
+        Integer status = query.getStatus();
+
+//        Page<User> page = Page.of(query.getPageNo(), query.getPageSize());
+//        if(StrUtil.isNotBlank(query.getSortBy())) {
+//            page.addOrder(query.getIsAsc() ? OrderItem.asc(query.getSortBy()) : OrderItem.desc(query.getSortBy()));
+//        } else {
+//            page.addOrder(OrderItem.desc("update_time"));
+//        }
+        Page<User> page = query.toMpPageDefaultSortByUpdateTime();
+        //分页查询
+        Page<User> p = lambdaQuery()
+                .like(name != null, User::getUsername, name)
+                .eq(status != null, User::getStatus, status)
+                .page(page);
+//        //封装VO结构
+//        PageDTO<UserVO> dto = new PageDTO<>();
+//        dto.setTotal(p.getTotal());
+//        dto.setPages(p.getPages());
+//        List<User> records = p.getRecords();
+//        if(CollUtil.isEmpty(records)) {
+//            dto.setList(Collections.emptyList());
+//            return dto;
+//        }
+//        dto.setList(BeanUtil.copyToList(records, UserVO.class));
+//        return dto;
+        return PageDTO.of(p, UserVO.class);
     }
 }
