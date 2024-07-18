@@ -32,14 +32,12 @@ public class UserController {
 
     @GetMapping("{id}")
     public UserVO queryUserById(@PathVariable("id") Long id) {
-        User user = userService.getById(id);
-        return BeanUtil.copyProperties(user, UserVO.class);
+        return userService.queryUserAndAddressById(id);
     }
 
     @GetMapping
     public List<UserVO> queryUserByIds(@RequestParam("ids") List<Long> ids) {
-        List<User> users = userService.listByIds(ids);
-        return BeanUtil.copyToList(users, UserVO.class);
+        return userService.queryUserAndAddressByIds(ids);
     }
 
     @PutMapping("/{id}/deduction/{money}")

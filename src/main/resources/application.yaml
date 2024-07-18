@@ -11,3 +11,10 @@ logging:
     dateformat: HH:mm:ss
 mybatis-plus:
   mapper-locations: "classpath*:mapper/*.xml"
+  global-config:
+    db-config:
+      logic-delete-field: deleted #逻辑删除字段
+      logic-delete-value: 1 #默认1
+      logic-not-delete-value: 0 #默认0
+  configuration:
+    default-enum-type-handler: com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler

@@ -1,7 +1,11 @@
 package com.mp.vo;
 
 
+import com.mp.enums.UserStatus;
+import com.mp.po.UserInfo;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class UserVO {
@@ -10,9 +14,11 @@ public class UserVO {
 
     private String username;
 
-    private String info;
+    private UserInfo info;
 
-    private Integer status;
+    private UserStatus status;
 
     private Integer balance;
+
+    private List<AddressVO> addresses;
 }
